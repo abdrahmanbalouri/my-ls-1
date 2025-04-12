@@ -32,6 +32,18 @@ func main() {
 			path = args[1]
 			args = args[1:]
 		}
+		b,err:=os.Stat(path)
+		if err!=nil{
+			fmt.Println("makaynch file",b)
+			continue
+		}else if b.IsDir() {
+		   fmt.Println()
+		}else{
+			kk:=trim(path)
+			fmt.Println(kk)
+			continue
+		}
+
 
 		flags := ""
 		if len(args) > 1 {

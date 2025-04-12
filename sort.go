@@ -4,7 +4,7 @@ import "strings"
 
 func sort(s string) string {
 
-	k := "lRart"
+	k := "Ratrl"
 	kk := []string{}
 	for i := 0; i < len(k); i++ {
 		for j := 0; j < len(s); j++ {

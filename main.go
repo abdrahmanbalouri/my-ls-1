@@ -100,16 +100,22 @@ func main() {
 		if len(args) > 1 {
 			flags = strings.Join(args[1:], "")
 		}
+		if len(flags)==1{
+			if flags=="-"{
+				fmt.Println("eror")
+				continue
+			}
+		}
 		if flags != "" {
 			flagg = sort(flags[1:])
 		}
+		
 
 		if !bolle(flags) {
 			fmt.Println("machi flag")
 			continue
 		}
 
-		fmt.Println(flagg)
 		if len(args) == 1 {
 			comned.ListFiles(path, false)
 		}

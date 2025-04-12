@@ -12,6 +12,8 @@ import (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
+
+		var flagg string
 		fmt.Print("> ")
 		comn, _ := reader.ReadString('\n')
 		comn = strings.TrimSpace(comn)
@@ -35,12 +37,22 @@ func main() {
 		if len(args) > 1 {
 			flags = strings.Join(args[1:], "")
 		}
+		if flags!=""{
+			flagg=sort(flags[1:])
+		}
+		
+		if !bolle(flags){
+			fmt.Println("machi flag")
+			continue
+		}
+		
+		fmt.Println(flagg)
 		if len(args) == 1 {
 			comned.ListFiles(path, false)
 		}
 
-		for _, i := range flags {
-			if i != '-' {
+		for _, i := range flagg {
+		
 				switch {
 				case i == 'l':
 					comned.ListFilesBydone(path)
@@ -55,7 +67,7 @@ func main() {
 				default:
 					fmt.Println("command not exist")
 				}
-			}
+			
 		}
 
 	}

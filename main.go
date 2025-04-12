@@ -22,6 +22,10 @@ func main() {
 		}
 
 		args := strings.Fields(comn)
+		if len(args)>3{
+			fmt.Println("iwant just 3") 
+			continue
+		}
 		if args[0] != "ls" {
 			fmt.Println("command not exist")
 			continue
@@ -31,18 +35,54 @@ func main() {
 		if len(args) > 1 && !strings.HasPrefix(args[1], "-") {
 			path = args[1]
 			args = args[1:]
-		}
-		b,err:=os.Stat(path)
+
+
+	   b,err:=os.Stat(path)
 		if err!=nil{
 			fmt.Println("makaynch file",b)
 			continue
 		}else if b.IsDir() {
 		   fmt.Println()
-		}else{
-			kk:=trim(path)
-			fmt.Println(kk)
-			continue
+		}else  {
+			if len(args)==1{
+			//kk:=trim(path)
+			fmt.Println(b.Name())
+             continue
+			}else if len(args)>1{
+				flag:=args[1]
+				if flag[0]!='-'{
+					fmt.Println("not flag")
+					continue
+				}
+				newflag:=flag[1:]
+				if !bolle(newflag){
+					
+					fmt.Println("machi flag")
+					continue
+				}
+				flagg:=sort(newflag)
+				fmt.Println(flagg)
+				
+				for i := 0; i < len(flagg); i++ {
+					switch{
+					case flagg[i] == 'l':
+						fmt.Println(b.Name())
+					case flagg[i] == 't':
+						fmt.Println(b.ModTime())
+					
+					}
+					
+				}
+				continue
+
+
+			}
+			
+			
+		
 		}
+		}
+		
 
 
 		flags := ""

@@ -13,8 +13,8 @@ import (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
-
-		var flagg string
+         path:="."
+		var flage []string
 		fmt.Print(">--- ")
 		comn, _ := reader.ReadString('\n')
 		comn = strings.TrimSpace(comn)
@@ -23,16 +23,18 @@ func main() {
 		}
 
 		args := strings.Fields(comn)
-		if len(args) > 3 {
-			fmt.Println("iwant just 3")
-			continue
-		}
+
 		if args[0] != "ls" {
 			fmt.Println("command not exist")
 			continue
 		}
+		if len(args)==1&& args[0]=="ls"{
+			comned.ListFiles(path, false)
+			continue
 
-		path := "."
+		}
+
+		
 		if len(args) > 1 && !strings.HasPrefix(args[1], "-") {
 			path = args[1]
 			args = args[1:]
@@ -42,86 +44,126 @@ func main() {
 				fmt.Println("makaynch", b)
 				continue
 			} else if b.IsDir() {
-				fmt.Println()
-			} else {
 				if len(args) == 1 {
-					//kk:=trim(path)
-					fmt.Println(b.Name())
+					// kk:=trim(path)
+					comned.ListFiles(path, false)
 					continue
 				} else if len(args) > 1 {
-					flag := args[1]
-					if len(flag) == 1 {
-						fmt.Println("not a flag  plz  change ")
-						continue
+					flag := args[1:]
+					kk := strings.Join(flag, " ")
+					flage = strings.Fields(kk)
+				}
+				l:=true
+				for i := 0; i < len(flage); i++ {
+					if flage[i][0] != '-'|| len(flage[i])==1 && flage[i]=="-" {
+						fmt.Println("not a flg")
+						l=false
+						break
 					}
-					if flag[0] != '-' {
-						fmt.Println("not flag")
-						continue
-					}
-					newflag := flag[1:]
-					if !bolle(newflag) {
-
-						fmt.Println("machi flag")
-						continue
-					}
-					flagg := sort(newflag)
-
-					for i := 0; i < len(flagg); i++ {
-						switch {
-						case flagg[i] == 'l':
-							fmt.Printf("%s %10d %s %s\n",
-								b.Mode(),
-								b.Size(),
-								b.ModTime().Format(time.RFC822),
-								b.Name())
-						case flagg[i] == 't':
-							fmt.Println(b.Name())
-						case flagg[i] == 'R':
-							fmt.Println(b.Name())
-						case flagg[i] == 'r':
-							fmt.Println(b.Name())
-						case flagg[i] == 'a':
-							fmt.Println(b.Name())
-
-
-
-
-						}
-
-					}
+				}
+				if !l{
+					continue
+				}
+				if !bolle(flage) {
+					fmt.Println("not  a flage")
 					continue
 
 				}
+				mratab := sort(flage)
+				for _, i := range mratab {
+					switch {
+					case i == 'l':
+						comned.ListFilesBydone(path)
+					case i == 'R':
+						comned.ListFilesRecursive(path)
+					case i == 'a':
+						comned.ListFiles(path, true)
+					case i == 'r':
+						comned.ListFilesReverse(path)
+					case i == 't':
+						comned.ListFilesByTime(path)
 
-			}
-		}
-
-		flags := ""
-		if len(args) > 1 {
-			flags = strings.Join(args[1:], "")
-		}
-		if len(flags)==1{
-			if flags=="-"{
-				fmt.Println("eror")
+					}
+				}
 				continue
+			} else {
+				if len(args) == 1 {
+					// kk:=trim(path)
+					fmt.Println(b.Name())
+					continue
+				} else if len(args) > 1 {
+					flag := args[1:]
+					kk := strings.Join(flag, " ")
+					flage = strings.Fields(kk)
+					fmt.Println(flage)
+				}
+				l:=true
+				for i := 0; i < len(flage); i++ {
+					if flage[i][0] != '-'|| len(flage[i])==1 && flage[i]=="-"  {
+						fmt.Println("not a flg")
+						l=false
+						break
+						
+					}
+				}
+				if !l{
+					continue
+				}
+				if !bolle(flage) {
+					fmt.Println("not  a flage")
+					continue
+
+				}
+				mratab := sort(flage)
+				for _, i := range mratab {
+					switch {
+					case i == 'l':
+						fmt.Printf("%s %10d %s %s\n",
+							b.Mode(),
+							b.Size(),
+							b.ModTime().Format(time.RFC822),
+							b.Name())
+					case i == 'R':
+						fmt.Println(b.Name())
+					case i == 'a':
+						fmt.Println(b.Name())
+
+					case i == 'r':
+						fmt.Println(b.Name())
+
+					case i == 't':
+						fmt.Println(b.Name())
+
+					}
+				}
+				continue
+
+			}
+
+		}
+		flag:=args[1:]
+		kk := strings.Join(flag, " ")
+	    flage = strings.Fields(kk)
+		fmt.Println(flage)
+		l:=true
+		for i := 0; i < len(flage); i++ {
+			if flage[i][0] != '-'|| len(flage[i])==1 && flage[i]=="-"  {
+				fmt.Println("not a flg")
+				l=false
+				break
 			}
 		}
-		if flags != "" {
-			flagg = sort(flags[1:])
-		}
-		
-
-		if !bolle(flags) {
-			fmt.Println("machi flag")
+		if !l{
 			continue
+
 		}
+		if !bolle(flage) {
+			fmt.Println("not  a flage")
+			continue
 
-		if len(args) == 1 {
-			comned.ListFiles(path, false)
 		}
-
-		for _, i := range flagg {
-
+		mratab := sort(flage)
+		for _, i := range mratab {
 			switch {
 			case i == 'l':
 				comned.ListFilesBydone(path)
@@ -133,11 +175,10 @@ func main() {
 				comned.ListFilesReverse(path)
 			case i == 't':
 				comned.ListFilesByTime(path)
-			default:
-				fmt.Println("command not exist")
-			}
 
+			}
 		}
 
+		
 	}
 }

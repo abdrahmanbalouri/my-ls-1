@@ -3,16 +3,21 @@ package comned
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 )
 
 func ListFilesRecursive(root string) {
-	filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
-		if err != nil {
-			fmt.Println("Error:", err)
-			return nil
-		}
+	entries, err := os.ReadDir(root)
+	if err != nil {
+		fmt.Println("Error reading directory:", err)
+		return
+	}
+
+	for _, entry := range entries {
+		path := root + "/" + entry.Name()
 		fmt.Println(path)
-		return nil
-	})
+
+		if entry.IsDir() {
+			ListFilesRecursive(path) // Call recursively for subdirectories
+		}
+	}
 }
